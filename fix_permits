@@ -1,0 +1,4 @@
+# fixes permits of flat files for apache
+# WARNING will not fix main app folder
+chmod -R ogu+rX htdocs
+
