@@ -1,2 +1,4 @@
 # image
-image handling app
+
+EVOKE app for storing, categorising, and displaying images
+
