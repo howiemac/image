@@ -1,0 +1,5 @@
+--- __init__.py	(original)
++++ __init__.py	(refactored)
+@@ -1 +1 @@
+-from User import User
++from .User import User

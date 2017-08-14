@@ -1,0 +1,49 @@
+# edit page (override)
+#
+div:style="height:100%; width:100%"
+  # show image
+  if self.kind=="image":
+    Page_image.evo
+  # header ##################################
+#  Page_header.evo
+  h1:self.name or "(no caption)"
+  h2:self.code
+  # content ###################################################################### 
+  div: id="content", cls="%s_content" % self.kind.replace(" ","_")
+    Page_content_header.evo
+    # Page Actions
+    Page_actions.evo
+    # edit ###################################### 
+    form: action=self.url('save_text'), cls="form-horizontal", role="form"
+      input:typ="hidden",name="tag",value=req.tag
+      input:typ="hidden",name="root",value=req.root
+      # edit title
+      div: cls='row'
+        div: cls='form-group'
+          label:"name",for_id='texttitle'
+          input: id="texttitle",  cls="form-control", name='name', value=self.name, onChange="confirmExit = true;", onKeyPress="confirmExit = true;"
+      # edit text ############################################ 
+      div:cls="row", id="pageedit"
+        div: cls="form-group"
+          label: "text", for_id="text"
+          textarea:self.text, cls="form-control", id="text", name="text", onChange="confirmExit = true;", onKeyPress="confirmExit = true;"
+#          script:"sizeArea(document.getElementById('text'));"
+#          script:"$('textarea').autosize();"
+      # save  
+      br:
+      div: cls='edithead row'
+        if self.stage=='draft':
+          button: "save", name='save', onclick="confirmExit = false", accesskey="S", cls="btn btn-default"
+          button: "post", name='post', onclick="confirmExit = false", cls="btn btn-primary"
+        else:
+          button: "save", name='save', onclick="confirmExit = false", accesskey="S", cls="btn btn-primary"
+    #/form 
+#    # edit tags  #####################
+#    Page_edit_tags.evo
+#    self.Page_edit_extras.evo
+    # footer (page info and prev/next item)  #################################################
+    Page_footer.evo
+    # search and navbar
+    Page_nav_footer.evo
+    # child page add / summaries  ######################################################################
+    Page_child_pages.evo

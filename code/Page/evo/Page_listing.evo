@@ -1,0 +1,29 @@
+Page_listing_header.evo
+div: id='content'
+  for item in req.pages:
+    div:cls="summary"
+      # image
+      item.Page_summaryimage.evo
+      # level
+      a: href=item.get_pob().url()
+        span:item.level_symbol()
+      # title
+      a: href=item.url('context')
+        span:item.get_name(), cls='big' 
+ #       span:item.status(full=True), cls='bright wee' 
+      # rating
+      ok=(item.rating >= self.minrating())
+      state='enabled' if ok else 'disabled'
+      span: item.rating_symbol(), cls=state
+      # score
+      span: item.score, cls="light wee"
+      # meta data
+      div: 
+        span: item.code, cls="light wee"
+        span: " - %s" % item.when.nice(), cls="light wee"
+      # text
+#      div: item.text.summarised(req,chars=1000,formatted=False)
+      div: item.text.summarised(req,chars=1000)
+      # tags
+      item.Page_tags.evo 
+Page_listing_footer.evo    

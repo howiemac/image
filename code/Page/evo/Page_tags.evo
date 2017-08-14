@@ -1,0 +1,5 @@
+# list tags for self
+div:
+  for t in self.get_tags():
+    a: t, href=self.get_pob().url("tagged",tag=lib.url_safe(t)) 
+    " - "

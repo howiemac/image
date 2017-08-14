@@ -1,0 +1,12 @@
+# slideshow view - for an image page
+
+# show image
+href=self.url("next",tag=req.tag,_method="show")
+a:href=href, title=self.name, target=""
+  div:style="height:100%; width:100%; position:relative; cursor: none !important;"
+    img:src=self.file_url(), alt=self.code, style="height:100%; position:absolute; left:50%; margin-right:-50%; transform:translate(-50%,0)"
+
+script:
+#  if req.refresh: 
+  "function doRefresh(){location.assign('%s')}; setTimeout(doRefresh,5000);" % href
+

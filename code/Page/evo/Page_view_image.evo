@@ -1,0 +1,23 @@
+# view - for an image page
+div:style="height:100%; width:100%"
+  # show image
+  Page_image.evo
+  # show info
+  Page_rating.evo
+  h1:self.name or "(no caption)"
+  Page_header_end.evo
+  br:
+  div:cls="wee"
+#    span:self.when.time()
+    span:self.code
+    span:"-", cls="light"
+    span:"%sk" % ((self.filesize()+512)//1024,)
+  br:
+  # level selection
+  Page_edit_level.evo
+  # tagging and tag removal
+  Page_edit_tags.evo
+#  div:self.text.formatted(req)
+  div:self.text.formatted(req)
+  br:
+  Page_nav_footer.evo

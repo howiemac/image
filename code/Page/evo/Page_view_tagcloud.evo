@@ -1,0 +1,19 @@
+#tag cloud
+Page_header.evo
+Page_select_level.evo
+if req.tag:
+  div: id="viewtagselect"
+    a: href=self.url("tagged?tag=%s%s" % (lib.url_safe(req.tag),"&root=1" if self.uid==1 else ""))
+      span:"view images tagged: "
+    for i in req.tag.split("."):
+      a: href=self.url("selecttag?tag=%s&deltag=%s" % (req.tag,i)), title="remove"
+        span: i
+    br:
+    br:
+div: id="tagcloud"
+  tags= self.get_sized_tagnames()
+  for (t,s) in tags:
+    href=self.url("selecttag?tag=%s&addtag=%s" % (req.tag,lib.url_safe(t)))
+    a: t.replace(" ","&nbsp;"), href=href, cls=s, title="select"
+    "&nbsp;"
+  a: "UNTAGGED", href=self.url("tagged?tag=UNTAGGED"), cls="norm"

@@ -1,0 +1,18 @@
+# contentheader include for main pages 
+div: id='contentheader'
+  a:name="top" 
+  Page_header_start.evo
+#  Page_options.evo
+  #title
+  div:id='pagetitle'
+    if self.uid in range(2,6):
+      h1:"%s %s" % (self.level_symbol(self.uid),self.name)
+    else:
+      h1:self.get_name()
+#    if self.name and self.code and (self.code!=self.name):
+#     span:"(%s)" % self.code, id='pagecode'
+    span: self.status(),cls='bright', id='pagestatus'
+  #rating
+  Page_rating.evo
+  #header-end
+  Page_header_end.evo

@@ -1,0 +1,18 @@
+#search form - overridden with non-bootstrap version
+#div: id="searchform"
+#  form: action=self.url("search")
+#    div: cls="input-group input-group-sm"
+#      input: name="searchfor", cls="form-control", alt="search", placeholder="search", onkeyup="searchChange(this)", onchange="searchChange(this)"
+#      span: cls="input-group-btn"
+#        button:cls="btn btn-default", id='gobutton', disabled="disabled"
+##          span:cls="glyphicon glyphicon-search"
+#          "ok"
+
+span: id="searchform"
+  form: action=req.user.abs_url("search")
+    span: cls="input-group input-group-sm"
+      input: name="searchfor", placeholder="search", onkeyup="searchChange(this)", onchange="searchChange(this)", alt="search"
+      span: cls="input-group-btn"
+        button:cls="cool", disabled="disabled", id='gobutton', title="find"
+#          span:cls="glyphicon glyphicon-search"
+          img: src="/site/images/system/search-32.png"

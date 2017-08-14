@@ -1,0 +1,53 @@
+--- config.py	(original)
++++ config.py	(refactored)
+@@ -29,4 +29,4 @@
+ 
+ 
+ # include config.py files from class folders
+-from Page.config import *  
++from .Page.config import *  
+--- look.py	(original)
++++ look.py	(refactored)
+@@ -20,7 +20,7 @@
+     readline.write_history_file(historyPath)
+ 
+ if os.path.exists(historyPath):
+-    print "reading history file", historyPath
++    print("reading history file", historyPath)
+     readline.read_history_file(historyPath)
+ 
+ atexit.register(save_history)
+@@ -33,7 +33,7 @@
+ sys.path.insert(0, os.path.abspath('.'))
+ sys.path.insert(1, os.path.abspath('../..'))
+ 
+-from config_site import domains
++from .config_site import domains
+ 
+ # start up
+ from base.serve import Dispatcher
+--- oldlook.py	(original)
++++ oldlook.py	(refactored)
+@@ -7,7 +7,7 @@
+ sys.path.insert(0,os.path.abspath('.')) 
+ sys.path.insert(1,os.path.abspath('../..'))
+ 
+-from config_site import domains
++from .config_site import domains
+ 
+ #start up
+ from base.serve import Dispatcher
+--- serve.py	(original)
++++ serve.py	(refactored)
+@@ -7,9 +7,10 @@
+ 
+ import os
+ import sys
++import imp
+ 
+ # Set the encoding to utf-8
+-reload(sys)  # needed to expose setdefaultencoding
++imp.reload(sys)  # needed to expose setdefaultencoding
+ sys.setdefaultencoding('utf-8')
+ 
+ # fix the path

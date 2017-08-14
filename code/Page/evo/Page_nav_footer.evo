@@ -1,0 +1,15 @@
+# search + nav footer for pages with full-height image (i.e. where top navbar is omitted)
+div:
+  #search form
+  div:
+    Page_search_form.evo
+  br:
+  # nav ############
+#  # home
+#  home=self.get(1)
+#  a:home.name, href=home.url()
+#  span:"-",cls="light"
+  # edit
+  tag= ("&tag=%s" % req.tag) if req.tag else ""
+  a:"view" if req.edit else "edit", href=self.url("" if req.edit else "edit",tag=req.tag,root=req.root)
+  

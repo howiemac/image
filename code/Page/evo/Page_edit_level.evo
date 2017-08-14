@@ -1,0 +1,14 @@
+# allow edit of level for self
+div: cls='row'
+  div: cls='form-group'
+    div: id="leveledit"
+      for uid in (5,4,3,2):
+        # href
+        href=self.url("set_level",level=uid,tag=req.tag,root=req.root or uid)
+        # cls 
+        cls="bright" if (uid==self.parent) else "light"
+        # put it all together
+#        a: self.get(uid).name, href=href, cls=("huge %s" % cls)
+        a: self.level_symbol(uid), href=href, cls=("huge %s" % cls)
+        "&nbsp;"
+  br:

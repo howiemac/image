@@ -1,0 +1,7 @@
+# level
+if self.uid==1:
+  span: id="level"
+    level=self.score+2
+    a: self.rating_symbol(self.downratings[rix]), href=self.url("rate_down",tag=req.tag,root=req.root), cls="popup title", title='rate down'
+    a: self.rating_symbol(), href=self.url('toggle_disable'), cls="%s title" % ("disabled" if self.rating<0 else "enabled"), title="enable" if (self.rating<0) else "disable"
+    a: self.rating_symbol(self.upratings[rix]),  href=self.url("rate_up",tag=req.tag,root=req.root), cls="popup title plus", title='rate up'

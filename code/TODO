@@ -1,0 +1,36 @@
+TO DO list for IMAGE app
+==
+
+script some tagging, eg:
+- everything tagged crystallotus should also be tagged "psychedelic"  (see tag hierarchy below - avoid unnecessary duplication...)
+- everything tagged  "Josephine Wall" should also be tagged "dreamy"
+
+
+- image edit
+ - image delete ( remove_image )
+ - image replace (move the image info including tags to the new image, and remove the old)
+
+tags
+  - tag hierarchy
+    - eg "crystallotus" should be under "psychedelic" - so that everything tagged crystallotus is also automatically tagged psychedelic
+    - eg "Josephine Wall" (and all other artists) should be under "art"
+    - eg girl,boy,man,woman, body parts, clothes worn should all be under "people"
+    - BK tags (museum, gallery, Brahma Baba etc) should be under BK
+    - sexual terms should be under "erotic"
+ - (add and remove tag should really be passed by a POST form, not a GET url...)
+ - edit a tag
+ - listing by multiple tags
+  - tag1 AND tag2
+  - tag1 AND NOT tag2   
+  - tag1 OR tag2
+  IDEAS:
+     - store compound tag filters in a "tagfilter" page, in python:
+       - "tag1" and "tag2"
+       - "tag1" or "tag2"
+       - "tag1" and not "tag2"
+     - name these in some distinct way (eg uppercase?) so that we can use them like a single tag, when listing/viewing etc..
+       - eg REALGIRL = "girl" and not ("sims" or "3D")
+           - in URL: <host>/12345?tag=REALGIRL
+
+
+

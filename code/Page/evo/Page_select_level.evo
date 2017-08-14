@@ -1,0 +1,16 @@
+# select level to view
+max=self.maxlevel()
+div: cls='row'
+  div: cls='form-group'
+    div: id="leveledit"
+      for uid in range(max,1,-1):
+       if uid==self.uid:
+        span: self.level_symbol(uid), cls="hilite big"
+       else:
+        levelpage=self.get(uid)
+        # href
+        href=levelpage.url()
+        # put it all together
+        a: self.level_symbol(uid), href=href, cls="big", title=levelpage.name
+       "&nbsp;"
+  br:

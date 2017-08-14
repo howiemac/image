@@ -1,0 +1,9 @@
+#paging - overridden here to provide tag info
+if req.page and (len(req.pages)==req.pagesize):
+  div:cls="summary"
+    a:"more...",cls='big',href=self.url(req.page,tag=req.tag,root=req.root,pagenext=req.pagenext)
+#no data
+if not req.pages:
+  div:'nothing found'
+# navbar
+Page_footer.evo

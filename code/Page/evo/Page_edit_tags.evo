@@ -1,0 +1,25 @@
+# allow edit of tags for self
+div: cls='row'
+  div: cls='form-group'
+    div: id="tagedit"
+      tags=self.get_tags()
+      recent=self.get_recent_tags()
+      for (tag,size) in self.get_pob().get_sized_tagnames():
+        # href
+        got=tag in tags
+        call="untag" if got else "tag"
+        href=self.url(call,name=lib.url_safe(tag),tag=req.tag,root=req.root)
+        # cls
+        poss=tag in recent
+        got_style="huge bright" if (tag==req.tag) else "bright"
+        style="%s %s" % (size,"lolite" if poss else "light")
+        cls= got_style if got else style
+        # put it all together
+        a: str(tag.replace(" ","&nbsp;")), href=href, cls=cls
+        "&nbsp;"
+      form: id="tagging", action=self.url("tag")
+        input: name="name", value="", size="10"
+        input: typ="hidden", name="tag", value=req.tag
+        input: typ="hidden", name="root", value=req.root
+        button: "add"
+  br:
