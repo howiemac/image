@@ -15,8 +15,8 @@ div:style="height:100%; width:100%"
     Page_actions.evo
     # edit ###################################### 
     form: action=self.url('save_text'), cls="form-horizontal", role="form"
-      input:typ="hidden",name="tag",value=req.tag
-      input:typ="hidden",name="root",value=req.root
+      input:type="hidden",name="tag",value=req.tag
+      input:type="hidden",name="root",value=req.root
       # edit title
       div: cls='row'
         div: cls='form-group'

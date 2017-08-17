@@ -19,7 +19,7 @@ div: cls='row'
         "&nbsp;"
       form: id="tagging", action=self.url("tag")
         input: name="name", value="", size="10"
-        input: typ="hidden", name="tag", value=req.tag
-        input: typ="hidden", name="root", value=req.root
+        input: type="hidden", name="tag", value=req.tag
+        input: type="hidden", name="root", value=req.root
         button: "add"
   br:
