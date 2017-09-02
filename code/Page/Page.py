@@ -1,6 +1,6 @@
 # -*- oding: utf-8 -*-
 """
-images: override for base/code/Page/Page.py
+images: override for evoke/Page/Page.py
 
 implements:
  - image addition
@@ -9,9 +9,9 @@ implements:
 written by Ian Howie Mackenzie 2016 onwards
 """
 
-from base.Page import Page as basePage
-from base.lib import *
-from base.render import html
+from evoke.Page import Page as basePage
+from evoke.lib import *
+from evoke.render import html
 
 from copy import copy
 import os, time, datetime, urllib.request, urllib.parse, urllib.error
@@ -65,7 +65,7 @@ class Page(basePage):
     return self.edit_form(req)
 
   def save_text(self,req):
-    "override of base version - this is called by Page_edit_form.evo"
+    "override of evoke version - this is called by Page_edit_form.evo"
     self.update(req)
     self.flush_page(req)
     self.clear_form(req)

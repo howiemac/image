@@ -15,7 +15,7 @@ sys.path.insert(1, os.path.abspath('../..'))
 
 from twisted.application import service
 
-from base.serve import start
+from evoke.serve import start
 
 # Twisted requires the creation of the root-level application object
 # to take place in this file.

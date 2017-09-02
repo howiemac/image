@@ -1,10 +1,8 @@
 # non-bootstrap standard wrapper head
 head:
-# link: rel="stylesheet", type="text/css" , media="screen" ,href="/site/base/css/base.css" 
  link: rel="stylesheet", type="text/css" , media="screen" ,href="/site/css/app.css"
  TITLE=req.user.get_HTML_title(self,req)
  title:TITLE 
-#  meta: http-equiv="X-UA-Compatible", content="IE=8;FF=3;OtherUA=4"
  meta: equiv="Content-Type", content="text/html; charset=utf-8"
  meta: equiv="Reply-to", content=self.Config.mailto
  meta: name="title", content=TITLE

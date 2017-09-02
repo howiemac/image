@@ -10,7 +10,7 @@ default_class="Page"
 urlpath=""  # no /evoke in url
 
 
-from base.data.schema import *  #for data definition
+from evoke.data.schema import *  #for data definition
 
 class Tag(Schema):
   table='tags'
@@ -22,7 +22,7 @@ class Tag(Schema):
 #class Test(Schema):
 #  pass
 
-#from base.config_base import User as BaseUser 
+#from evoke.config_base import User as BaseUser 
 #
 #class User(BaseUser):
 #  pass
