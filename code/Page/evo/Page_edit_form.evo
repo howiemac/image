@@ -27,8 +27,6 @@ div:style="height:100%; width:100%"
         div: cls="form-group"
           label: "text", for_id="text"
           textarea:self.text, cls="form-control", id="text", name="text", onChange="confirmExit = true;", onKeyPress="confirmExit = true;"
-#          script:"sizeArea(document.getElementById('text'));"
-#          script:"$('textarea').autosize();"
       # save  
       br:
       div: cls='edithead row'
