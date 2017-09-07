@@ -7,6 +7,7 @@
 
 import atexit
 import os
+import sys
 import readline
 import rlcompleter
 
@@ -20,22 +21,27 @@ def save_history(historyPath=historyPath):
     readline.write_history_file(historyPath)
 
 if os.path.exists(historyPath):
-    print("reading history file", historyPath)
+    print ("reading history file", historyPath)
     readline.read_history_file(historyPath)
 
 atexit.register(save_history)
-del os, atexit, readline, rlcompleter, save_history, historyPath
+del atexit, readline, rlcompleter, save_history, historyPath
 
 
 # fix the path
-import os
-import sys
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(1, os.path.abspath('../..'))
 
-from .config_site import domains
+# and do the evoke imports
+from config_site import domains
+from evoke.serve import Req, Dispatcher
+
+req = Req()
+req.cookies = {}
 
 # start up
-from evoke.serve import Dispatcher
 dispatcher = Dispatcher()
 globals().update(dispatcher.apps[domains[0]])
+
+for clsname, cls in dispatcher.apps[domains[0]].items():
+    setattr(req, clsname, cls)
