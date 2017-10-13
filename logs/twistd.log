@@ -1,0 +1,33 @@
+2017-10-09 14:27:19+0100 [-] Loading serve.py...
+2017-10-09 14:27:20+0100 [-] Loaded.
+2017-10-09 14:27:20+0100 [-] twistd 17.9.0 (/home/howie/code/even/bin/python3.6 3.6.2) starting up.
+2017-10-09 14:27:20+0100 [-] reactor class: twisted.internet.epollreactor.EPollReactor.
+2017-10-09 14:27:20+0100 [-] Site starting on 8081
+2017-10-09 14:27:20+0100 [-] Starting factory <twisted.web.server.Site object at 0x7fec89af29b0>
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET / HTTP/1.1" 302 21 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /1 HTTP/1.1" 200 6367 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/css/app.css site/css/app.css
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/css/app.css HTTP/1.1" 200 920 "http://image:8081/1" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/evoke/js/jquery.autosize.js site/evoke/js/jquery.autosize.js
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/evoke/js/jquery.autosize.js HTTP/1.1" 200 3115 "http://image:8081/1" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/evoke/js/jquery.js site/evoke/js/jquery.js
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/evoke/js/jquery.js HTTP/1.1" 200 29482 "http://image:8081/1" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/evoke/js/evoke.js site/evoke/js/evoke.js
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/evoke/js/evoke.js HTTP/1.1" 200 428 "http://image:8081/1" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/images/system/search-32.png site/images/system/search-32.png
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/images/system/search-32.png HTTP/1.1" 200 4645 "http://image:8081/1" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/js/app.js site/js/app.js
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/js/app.js HTTP/1.1" 200 196 "http://image:8081/1" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/css/default.css site/css/default.css
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/css/default.css HTTP/1.1" 200 5640 "http://image:8081/site/css/app.css" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/css/layout.css site/css/layout.css
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/css/layout.css HTTP/1.1" 200 1401 "http://image:8081/site/css/app.css" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:53+0100 [-] URI,path >>>>  /site/css/dark.css site/css/dark.css
+2017-10-09 14:27:53+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /site/css/dark.css HTTP/1.1" 200 1375 "http://image:8081/site/css/app.css" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:27:54+0100 [-] URI,path >>>>  /favicon.ico site/favicon.ico
+2017-10-09 14:27:54+0100 [-] "127.0.0.1" - - [09/Oct/2017:13:27:53 +0000] "GET /favicon.ico HTTP/1.1" 200 697 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
+2017-10-09 14:28:15+0100 [-] Received SIGTERM, shutting down.
+2017-10-09 14:28:15+0100 [-] (TCP Port 8081 Closed)
+2017-10-09 14:28:15+0100 [-] Stopping factory <twisted.web.server.Site object at 0x7fec89af29b0>
+2017-10-09 14:28:15+0100 [-] Main loop terminated.
+2017-10-09 14:28:15+0100 [-] Server Shut Down.

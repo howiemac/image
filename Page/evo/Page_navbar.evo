@@ -4,7 +4,7 @@ div: id="navbar", cls="navbar navbar-default"
     span:cls="navbar-nav"
       # level-filter
       root = self.uid==1
-      if root:
+      if self.uid<6:
        span: id="levelfiltersymbols"
         rootlev=self.maxlevel()
         for lev in (5,4,3,2):
@@ -20,15 +20,13 @@ div: id="navbar", cls="navbar navbar-default"
           tit= "allow all items" if rat==-4 else "ignore items rated below %s" % self.rating_symbol(rat)
           a:self.rating_symbol(rat), href=self.url("set_global_filter?rating=%s" % rat), title=tit, cls=cls
         "&nbsp;"
-#    ul:cls="nav navbar-nav"
-#      for name,href,title in self.navbar_links():
-#        li:
-#          a: name,href=href, title=title, target="_blank" if href.startswith("http") else "_self"
-      if req.page in ("latest","tagged") and req.pages:
-        page=self if self.uid>2 else req.pages[0]
-        a: "slideshow",href=page.url("show",tag=req.tag), title="slideshow", target="_blank"
-        span: "-", cls="light"
-      a: "additions" if root else "latest",href=self.url("latest"), title="what's new in %s" % self.name
+#      if req.page in ("latest","tagged") and req.pages:
+#        page=self if self.uid>2 else req.pages[0]
+#        a: "slideshow",href=page.url("show",tag=req.tag), title="slideshow", target="_blank"
+#        span: "-", cls="light"
+      a: "latest",href=self.url("latest"), title="what's recent in %s" % self.name
+      "&nbsp;"
+      a: "additions",href=self.get(1).url("additions"), title="import and show new images"
       "&nbsp;"
     span: cls="navbar-form"
       Page_search_form.evo

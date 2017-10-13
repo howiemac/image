@@ -41,17 +41,29 @@ class Page(basePage):
       return self.view_image(req)
     return basePage.view(self,req)
 
-  def latest(self, req, limit=50):
-    "overridden to include only child images"
-    self.add_images() # add new files from "image additions" folder
-    lim=page(req,limit)
-    _where='rating>=%s and lineage like "%s%%"' % (self.minrating(),self.lineage+str(self.uid)+'.')
-#    print ">>>>>",_where
-    req.pages = self.list(kind='image',parent=self.uid,where=_where,orderby="uid desc",limit=lim)
+  def latest(self, req):
+    "overridden to include only child images, and to allow for additions"
+    lim=page(req)
+    if self.uid==1:
+      where='rating>=%s' % self.minrating()
+    else:
+#      where='rating>=%s and lineage like "%s%%"' % (self.minrating(),self.lineage+str(self.uid)+'.')
+      where='rating>=%s and parent=%s' % (self.minrating(),self.uid)
+    req.pages = self.list(kind='image',where=where,orderby="uid desc",limit=lim)
     req.title="latest"
     req.page='latest' # for paging
     return self.listing(req)
 
+  def additions(self, req):
+    "fetch new images and list them"
+    self.add_images() # add new files from "image additions" folder
+    lim=page(req)
+#    where='rating>=%s and lineage like "%s%%"' % (self.minrating(),self.lineage+str(self.uid)+'.')
+    where='rating>=%s' % self.minrating()
+    req.pages = self.list(kind='image',parent=1,where=where,orderby="uid desc",limit=lim)
+    req.title="additions"
+    req.page='additions' # for paging
+    return self.get(1).listing(req)
 
   # slideshow
   @html
@@ -135,7 +147,7 @@ class Page(basePage):
 ##          image.renumber_siblings_by_kind()#keep them in order
           # move the image file
           os.renames(filepath,image.file_loc(image.code)) #BEWARE: this will remove the image_additions folder itself if it is now empty...
-          # add tags
+          # add tags (unless we are at the root of the file tree)
           if not root:
             for tag in dirname.split("."):
               image.add_tag(tag)
@@ -444,30 +456,49 @@ class Page(basePage):
 ##    print sql
 #    pages=[p["uid"] for p in self.list(sql=sql,asObjects=False)]
 
-    where="rating>=0 and uid>%s" % self.uid
-    pages=[p.uid for p in self.list(kind="image",score=0,where=where,orderby="uid",limit="2")]
-
-#    print len(pages), "ITEMS"
-#    print pages[:10]
-    if pages:
-      return req.redirect(self.get(pages[1]).url("offer",rival=pages[0]))
+    # get self
+    if self.kind=='image': 
+      where="rating>=0 and uid>%s" % self.uid
+    else: # assume fist time
+      where="rating>=0"
+    selfs=self.list_int('uid',kind="image",score=0,where=where,orderby="uid",limit="1")
+    # get rival
+    if req.rival:
+      where="rating>=0 and uid<%s" % req.rival
+    else: # assume first time
+      where="rating>=0"
+    rivals=self.list_int('uid',kind="image",score=0,where=where,orderby="uid desc",limit="1")
+    # make and offer
+    if selfs and rivals:
+      return req.redirect(self.get(selfs[0]).url("offer",rival=rivals[0]))
     # bomb out
     return req.redirect(self.get(1).url())
 
-  def pick(self,req):
-    """ self has been chosen in preference to req.over
+  def win(self,req):
+    """ self has been chosen in preference to req.rival
         so adjust scores accordingly
     """
-    over=self.get(safeint(req.over))
+    rival=self.get(safeint(req.rival))
     # adjust scores - don't allow 0 to be re-used
     self.score+= (2 if self.score==-1 else 1)
     self.flush()
-    over.score-= (2 if over.score==1 else 1)
-    over.flush()
+    rival.score-= (2 if rival.score==1 else 1)
+    rival.flush()
     # return next offer
-    last=self if self.uid>over.uid else over # derive last offer self 
-    return last.select(req)
+    return self.select(req)
 
+  def lose(self,req):
+    """ req.rival has been chosen in preference to self
+        so adjust scores accordingly
+    """
+    rival=self.get(safeint(req.rival))
+    # adjust scores - don't allow 0 to be re-used
+    self.score-= (2 if self.score==1 else 1)
+    self.flush()
+    rival.score+= (2 if rival.score==-1 else 1)
+    rival.flush()
+    # return next offer
+    return self.select(req)
 
 # level
 
