@@ -206,7 +206,7 @@ class Page(basePage):
       pages=self.list(kind="image",parent=p.uid,where=where,limit=1,orderby='uid desc')
       if pages:
         return pages[0].edit_return(req,req.url)
-      return req.redirect(self.get(1).url("latest"))
+      return req.redirect(self.get(1).url("additions"))
 
   # tags utilities #####################
 
