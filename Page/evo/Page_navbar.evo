@@ -24,7 +24,7 @@ div: id="navbar", cls="navbar navbar-default"
 #        page=self if self.uid>2 else req.pages[0]
 #        a: "slideshow",href=page.url("show",tag=req.tag), title="slideshow", target="_blank"
 #        span: "-", cls="light"
-      a: "latest",href=self.url("latest"), title="what's recent in %s" % self.name
+      a: "latest",href=self.url(f"latest?root={self.uid}"), title=f"what's recent in {self.name}"
       "&nbsp;"
       a: "additions",href=self.get(1).url("additions"), title="import and show new images"
       "&nbsp;"

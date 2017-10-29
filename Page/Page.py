@@ -44,11 +44,7 @@ class Page(basePage):
   def latest(self, req):
     "overridden to include only child images, and to allow for additions"
     lim=page(req)
-    if self.uid==1:
-      where='rating>=%s' % self.minrating()
-    else:
-#      where='rating>=%s and lineage like "%s%%"' % (self.minrating(),self.lineage+str(self.uid)+'.')
-      where='rating>=%s and parent=%s' % (self.minrating(),self.uid)
+    where=f"{self.parentclause()} and rating>={self.minrating()}"
     req.pages = self.list(kind='image',where=where,orderby="uid desc",limit=lim)
     req.title="latest"
     req.page='latest' # for paging
@@ -202,8 +198,8 @@ class Page(basePage):
         return pages[0].edit_return(req)
       return p.edit_return(req,"tagged")
     else: # no tag, so return next image by UID (descending)
-      where="uid<%s and rating>=%s" % (self.uid,self.minrating())
-      pages=self.list(kind="image",parent=p.uid,where=where,limit=1,orderby='uid desc')
+      where=f"{p.parentclause()} and uid<{self.uid} and rating>={self.minrating()}"
+      pages=self.list(kind="image",	where=where,limit=1,orderby='uid desc')
       if pages:
         return pages[0].edit_return(req,req.url)
       return req.redirect(self.get(1).url("additions"))
@@ -266,7 +262,6 @@ class Page(basePage):
 
   def update_tags(self,req):
     "edit update for tags"
-#    print ">>>>>>>>>>>>>>", req
     if 'tag1' in req:
       oldtags=self.Tag.list(page=self.uid)
       newtags=[]
@@ -279,8 +274,8 @@ class Page(basePage):
       for t in newtags:
         self.add_tag(t)# add the tag
       for tob in oldtags:
-        tob.delete()      
-  
+        tob.delete()
+
   def tag(self,req):
     "add tag of req.name for self"
     if req.name:
@@ -299,8 +294,8 @@ class Page(basePage):
 
   def parentclause(self):
     "returns sql WHERE clause operator and parameters, depending on self.uid and maxlevel"
-    clause=("=%s" % self.uid) if (self.uid>1) else ("<=%s" % self.maxlevel())
-    return "pages.parent %s" % clause
+    clause=(f"={self.uid}") if (self.uid>1) else (f"<={self.maxlevel()}")
+    return f"pages.parent{clause}"
 
   def children_by_tag(self,tag="",order="uid",limit="",below=None):
     """ return a list of all child page objects with given tag
@@ -316,17 +311,16 @@ class Page(basePage):
     andclause='uid %sin (select distinct page from `%s`.tags where name="%s")'
     andclauses=[(andclause % ("not " if i[0]=="~" else "",db,i.lstrip("~"))) for i in tags]
     tagclause=" and ".join(andclauses)
-#    print ">>>>>>>", tagclause
     # allow for "below" parameter
-    belowclause= ("and uid<%s" % below) if below else ""
-    sql="""select * from `%s`.pages
-           where %s
+    belowclause= f"and pages.uid<{below}" if below else ""
+    sql=f"""select * from `{db}`.pages
+           where {self.parentclause()}
            and kind="image"
-           and rating>=%s
-           %s
-           and %s
-           order by %s
-        """ % (db,self.parentclause(),self.minrating(),belowclause,tagclause,order)
+           and rating>={self.minrating()}
+           {belowclause}
+           and {tagclause}
+           order by {order}
+        """
     if limit:
       sql+="limit %s" % limit
 #    print ">>>>>>>>>>>>>", sql
@@ -336,19 +330,19 @@ class Page(basePage):
   def children_untagged(self,order="uid",limit="",below=None):
     " returns a list of all child page objects with no tag "
     db=self.Config.database
-    belowclause= ("and uid<%s" % below) if below else ""
-    sql="""select pages.* from `%s`.pages
-           left join `%s`.tags
-           on tags.page=pages.uid 
-           where %s
-           and pages.kind="image" 
+    belowclause= f"and pages.uid<{below}" if below else ""
+    sql=f"""select pages.* from `{db}`.pages
+           left join `{db}`.tags
+           on tags.page=pages.uid
+           where {self.parentclause()}
+           and pages.kind="image"
            and tags.page is NULL
-           and rating>=%s
-           %s
-           order by %s
-        """ % (db,db,self.parentclause(),self.minrating(),belowclause,"pages."+order)
+           and rating>={self.minrating()}
+           {belowclause}
+           order by pages.{order}
+        """
     if limit:
-      sql+="limit %s" % limit
+      sql+=f"limit {limit}"
 #    print ">>>>>>>>>>>>>", sql
     return self.list(sql=sql)
 
