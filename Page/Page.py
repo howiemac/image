@@ -1,4 +1,3 @@
-# -*- oding: utf-8 -*-
 """
 images: override for evoke/Page/Page.py
 
@@ -189,20 +188,27 @@ class Page(basePage):
     req.page='tagged' # for paging
     return self.listing(req)
 
-  def next(self,req):
-    " return the next page for given req.tag "
+  def next_page(self,req):
+    " return the next page for given req.tag and req.root"
     p=self.get(req.root) if req.root else self.get_pob()
     if req.tag:
       pages=p.children_by_tag(tag=req.tag,order="uid desc",limit="1",below=self.uid)
       if pages:
-        return pages[0].edit_return(req)
-      return p.edit_return(req,"tagged")
+        return pages[0]
+      req._method='tagged'
+      return p
     else: # no tag, so return next image by UID (descending)
       where=f"{p.parentclause()} and uid<{self.uid} and rating>={self.minrating()}"
-      pages=self.list(kind="image",	where=where,limit=1,orderby='uid desc')
+      pages=self.list(kind="image",where=where,limit=1,orderby='uid desc')
       if pages:
-        return pages[0].edit_return(req,req.url)
-      return req.redirect(self.get(1).url("additions"))
+        return pages[0]
+      req._method=''
+      return p
+
+  def next(self,req):
+    " return the view (or req._method) of the next page for given req.tag and req.root "
+    p=self.next_page(req)
+    return p.edit_return(req,req._method)
 
   # tags utilities #####################
 
@@ -299,9 +305,9 @@ class Page(basePage):
 
   def children_by_tag(self,tag="",order="uid",limit="",below=None):
     """ return a list of all child page objects with given tag
-    tag may be a single tag string, or a period-separated string of tags to combine
-    tags prefixed with ~ are interpreted as tags to exclude
-    "below" - if set - limits the results to uids below this value 
+    - tag may be a single tag string, or a period-separated string of tags to combine
+    - tags prefixed with ~ are interpreted as tags to exclude
+    - "below" - if set - limits the results to uids below this value 
     """
     if (not tag) or (tag=="UNTAGGED"):
       return self.children_untagged(order=order,limit=limit,below=below)
@@ -328,7 +334,9 @@ class Page(basePage):
 
 
   def children_untagged(self,order="uid",limit="",below=None):
-    " returns a list of all child page objects with no tag "
+    """ returns a list of all child page objects with no tag
+    - "below" - if set - limits the results to uids below this value
+    """
     db=self.Config.database
     belowclause= f"and pages.uid<{below}" if below else ""
     sql=f"""select pages.* from `{db}`.pages

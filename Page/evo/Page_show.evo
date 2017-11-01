@@ -1,9 +1,9 @@
 # slideshow view - for an image page
 
 # show image
-href=self.url("next",tag=req.tag,_method="show")
-a:href=href, title=self.name, target=""
-  div:style="height:100%; width:100%; position:relative; cursor: none !important;"
+href=self.url("next",tag=req.tag,root=req.root,_method="show")
+div:style="height:100%; width:100%; position:relative; cursor: none !important;"
+  a:href=href, title=self.name, target=""
     img:src=self.file_url(), alt=self.code, style="height:100%; position:absolute; left:50%; margin-right:-50%; transform:translate(-50%,0)"
 
 script:
