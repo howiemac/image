@@ -1,5 +1,5 @@
 # level
-if self.uid==1:
+if self.uid<=6:
   span: id="level"
     level=self.score+2
     a: self.rating_symbol(self.downratings[rix]), href=self.url("rate_down",tag=req.tag,root=req.root), cls="popup title", title='rate down'

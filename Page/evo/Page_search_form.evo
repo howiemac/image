@@ -14,5 +14,6 @@ span: id="searchform"
       input: name="searchfor", placeholder="search", onkeyup="searchChange(this)", onchange="searchChange(this)", alt="search"
       span: cls="input-group-btn"
         button:cls="cool", disabled="disabled", id='gobutton', title="find"
-#          span:cls="glyphicon glyphicon-search"
-          img: src="/site/images/system/search-32.png"
+          img:src="/site/evoke/images/glyphicons-28-search.png"
+
+

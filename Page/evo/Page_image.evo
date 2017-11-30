@@ -1,6 +1,7 @@
 # show image
 root=req.root or self.parent
-href= self.url("next",tag=req.tag,root=root) if req.tag else self.url("next",root=root) 
+#href= self.url("next",tag=req.tag,root=root) if req.tag else self.url("next",root=root) 
+href= self.url("next",root=root,tag=req.tag)
 a:href=href, title=self.name, target=""
   img:src=self.file_url(), alt=self.code, style="float:right;"+self.autostyle()
 #if self.name:

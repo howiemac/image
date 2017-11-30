@@ -3,7 +3,7 @@ max=self.maxlevel()
 div: cls='row'
   div: cls='form-group'
     div: id="leveledit"
-      for uid in range(max,1,-1):
+      for uid in range(max,2,-1):
        if uid==self.uid:
         span: self.level_symbol(uid), cls="hilite big"
        else:

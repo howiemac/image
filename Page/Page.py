@@ -31,10 +31,11 @@ class Page(basePage):
     ""
     #req.wrapper=None
 
-
   def view(self,req):
     ""
-    if self.uid and self.uid<=5:
+    if self.uid and self.uid==2:
+      return self.additions(req)
+    elif self.uid and self.uid<=6:
       return self.view_tagcloud(req)
     elif self.kind=="image":
       return self.view_image(req)
@@ -50,15 +51,16 @@ class Page(basePage):
     return self.listing(req)
 
   def additions(self, req):
-    "fetch new images and list them"
+    "fetch new images (from page 2) and list them"
     self.add_images() # add new files from "image additions" folder
     lim=page(req)
 #    where='rating>=%s and lineage like "%s%%"' % (self.minrating(),self.lineage+str(self.uid)+'.')
     where='rating>=%s' % self.minrating()
-    req.pages = self.list(kind='image',parent=1,where=where,orderby="uid desc",limit=lim)
-    req.title="additions"
+    req.pages = self.list(kind='image',parent=2,where=where,orderby="uid desc",limit=lim)
+    req.title="latest"
     req.page='additions' # for paging
-    return self.get(1).listing(req)
+    req.root=2 # for navigation
+    return self.listing(req)
 
   # slideshow
   @html
@@ -82,9 +84,14 @@ class Page(basePage):
     """common return for edit options 
      - redirect to optional view function 
      - or else the default is "", ie view() 
-     - preserves req.tag and req.root
+     - preserves req.tag, req.root, if they exist
     """
-    return req.redirect(self.url(view,tag=req.tag,root=req.root))
+    extras={}
+#    for k in ('tag','root'):
+#      if (k in req) and req[k]:
+#        extras[k]=req[k]
+#    return req.redirect(self.url(view,**extras))
+    return req.redirect(self.url(view,root=req.root,tag=req.tag))
 
   # autostyle of image
 
@@ -127,7 +134,7 @@ class Page(basePage):
         if ext in ('jpg','jpeg','gif','png'):
           # create a new image page
           image=self.new()
-          image.parent=1 #parent is always home page (1)
+          image.parent=2 #parent is always additions page (2)
           image.kind='image'
           image.seq=image.uid
           image.stage='right full' #rest of stage data will be added on the fly later by get_stage_data() 
@@ -202,7 +209,10 @@ class Page(basePage):
       pages=self.list(kind="image",where=where,limit=1,orderby='uid desc')
       if pages:
         return pages[0]
-      req._method=''
+      if req.root==1: # return to additions page
+        req._method='additions'
+      else:
+        req._method=''
       return p
 
   def next(self,req):
@@ -506,17 +516,17 @@ class Page(basePage):
 
   # access these via level_symbol()
 #  levelsymbols=('.','&clubs;','&spades;','&hearts;','&diams;')
-  levelsymbols=('.','&hearts;','&diams;','&spades;','&clubs;')
+  levelsymbols=('*','.','&hearts;','&diams;','&spades;','&clubs;')
 
   def level_symbol(self,level=None):
     "give symbol for level"
-    # level should be in (1,2,3,4,5)
+    # level should be in (1,2,3,4,5,6)
     l=level or self.parent
     return self.levelsymbols[l-1]
 
   def set_level(self,req):
-    "set level to req.level (or else set it to 1)"
-    level=safeint(req.level) or 1
+    "set level to req.level (or else set it to 2)"
+    level=safeint(req.level) or 2
     self.move_to(level)
     return self.edit_return(req)
 
@@ -528,7 +538,7 @@ class Page(basePage):
     return req.redirect(root.url())
 
   def maxlevel(self):
-    "max level being displayed - stored in root page score in range 0 to 3"
+    "max level being displayed - stored in root page score in range 0 to 5"
     return self.get(1).score or 2
 
 # file info
