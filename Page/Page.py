@@ -52,7 +52,11 @@ class Page(basePage):
 
   def additions(self, req):
     "fetch new images (from page 2) and list them"
-    self.add_images() # add new files from "image additions" folder
+    # set minrating to 0 (ie ?)
+    self.set_minrating(0)
+    # add new files from "image additions" folder
+    self.add_images()
+    # return thumbnail listing
     lim=page(req)
 #    where='rating>=%s and lineage like "%s%%"' % (self.minrating(),self.lineage+str(self.uid)+'.')
     where='rating>=%s' % self.minrating()
@@ -409,9 +413,14 @@ class Page(basePage):
     "returns minimum rating accepted by global filter"
     return self.get(1).rating
 
+  def set_minrating(self,rating):
+    "sets minrating (stored as root rating)"
+    self.get(1).set_rating(rating)
+#    return rating
+
   def set_global_filter(self,req):
     "sets root rating (used as a global filter) to req.rating"
-    self.get(1).set_rating(req.rating)
+    self.set_minrating(req.rating)
 #    print ">>>",req
     return self.edit_return(req)
 

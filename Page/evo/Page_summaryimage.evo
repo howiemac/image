@@ -5,7 +5,7 @@ div:cls='summaryimage'
   image=self.get_image()
   if image:
     root=req.root or self.parent
-    href= self.url(root=root,tag=req.tag)
+    href= self.url(tag=req.tag,root=root)
     a:title=image.name, href=href, cls="image_right image_thumb", style=image.get_anchor_width_style('thumb')
      img:src=image.thumb_url(), alt=image.code, style=image.get_image_width_style('thumb')
 #    a:title=image.name, href=self.url(), cls="image_left", style="width:250px"
