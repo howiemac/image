@@ -5,7 +5,7 @@ div: id='contentheader'
 #  Page_options.evo
   #title
   div:id='pagetitle'
-    if self.uid in range(2,7):
+    if self.uid in range(2,self.maxlevel()+1):
       h1:"%s %s" % (self.level_symbol(self.uid),self.name)
     else:
       h1:self.get_name()

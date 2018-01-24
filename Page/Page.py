@@ -19,6 +19,13 @@ class Page(basePage):
   ""
   contextkinds=['file'] #override - "image" removed from here
 
+
+  # level depth
+
+  toplevel=6
+  toplevel=7
+#  toplevel=9
+
   # view override ####################
 
   @html
@@ -33,13 +40,13 @@ class Page(basePage):
 
   def view(self,req):
     ""
-    if self.uid and self.uid==2:
+    if self.uid and self.uid==2: # additions
       return self.additions(req)
-    elif self.uid and self.uid<=6:
+    elif self.uid and self.uid<=self.maxlevel(): # levels
       return self.view_tagcloud(req)
-    elif self.kind=="image":
+    elif self.kind=="image": # images
       return self.view_image(req)
-    return basePage.view(self,req)
+    return basePage.view(self,req) # root
 
   def latest(self, req):
     "overridden to include only child images, and to allow for additions"
@@ -95,7 +102,7 @@ class Page(basePage):
 #      if (k in req) and req[k]:
 #        extras[k]=req[k]
 #    return req.redirect(self.url(view,**extras))
-    return req.redirect(self.url(view,root=req.root,tag=req.tag))
+    return req.redirect(self.url(view,tag=req.tag,root=req.root))
 
   # autostyle of image
 
@@ -313,7 +320,7 @@ class Page(basePage):
     return req.redirect(self.url("",tag=req.tag,root=req.root))
 
   def parentclause(self):
-    "returns sql WHERE clause operator and parameters, depending on self.uid and maxlevel"
+    "returns sql WHERE clause operator and parameters, depending on self.uid and self.maxlevel"
     clause=(f"={self.uid}") if (self.uid>1) else (f"<={self.maxlevel()}")
     return f"pages.parent{clause}"
 
@@ -523,13 +530,14 @@ class Page(basePage):
 
 # level
 
+
   # access these via level_symbol()
 #  levelsymbols=('.','&clubs;','&spades;','&hearts;','&diams;')
-  levelsymbols=('*','.','&hearts;','&diams;','&spades;','&clubs;')
+  levelsymbols=('*','.','&infin;','&Psi;','&Delta;','&Omega;','&diams;','&spades;','&clubs;')
 
   def level_symbol(self,level=None):
     "give symbol for level"
-    # level should be in (1,2,3,4,5,6)
+    # level should be in (1,2,3,4,5,6,7,8,9)
     l=level or self.parent
     return self.levelsymbols[l-1]
 
@@ -540,15 +548,16 @@ class Page(basePage):
     return self.edit_return(req)
 
   def set_maxlevel(self,req):
-    "sets root score to reflect req.level"
+    "sets root score to given req.level"
     root=self.get(1)
     root.score=safeint(req.level)
     root.flush()
-    return req.redirect(root.url())
+    return req.redirect(self.url())
 
   def maxlevel(self):
-    "max level being displayed - stored in root page score in range 0 to 5"
-    return self.get(1).score or 2
+    "max level being displayed - stored in root page score"
+    return min(self.toplevel,self.get(1).score or 2)
+
 
 # file info
 

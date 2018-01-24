@@ -4,12 +4,12 @@ div: id="navbar", cls="navbar navbar-default"
     span:cls="navbar-nav"
       # level-filter
       root = self.uid==1
-      if self.uid<=6:
+      if self.uid<=self.toplevel:
        span: id="levelfiltersymbols"
         rootlev=self.maxlevel()
-        for lev in (6,5,4,3):
+        for lev in range(self.toplevel,2,-1):
           cls="enabled" if rootlev>=lev else "disabled"
-          tit= "show all levels" if lev==6 else "show only %s" % self.level_symbol(lev) if lev==3 else "show levels down to %s" % self.level_symbol(lev)
+          tit= "show all levels" if lev==self.toplevel else "show only %s" % self.level_symbol(lev) if lev==3 else "show levels down to %s" % self.level_symbol(lev)
           a:self.level_symbol(lev), href=self.url("set_maxlevel?level=%s" % lev), title=tit, cls=cls
         "&nbsp;"
       # rating-filter

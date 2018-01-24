@@ -10,6 +10,6 @@ div:
 #  a:home.name, href=home.url()
 #  span:"-",cls="light"
   # edit
-  tag= ("&tag=%s" % req.tag) if req.tag else ""
+#  tag= ("&tag=%s" % req.tag) if req.tag else ""
   a:"view" if req.edit else "edit", href=self.url("" if req.edit else "edit",tag=req.tag,root=req.root)
   

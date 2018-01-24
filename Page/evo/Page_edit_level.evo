@@ -2,7 +2,7 @@
 div: cls='row'
   div: cls='form-group'
     div: id="leveledit"
-      for uid in (6,5,4,3):
+      for uid in range(self.maxlevel(),2,-1):
         # href
         href=self.url("set_level",level=uid,tag=req.tag,root=req.root or uid)
         # cls 

@@ -8,7 +8,7 @@ div: cls='row'
         # href
         got=tag in tags
         call="untag" if got else "tag"
-        href=self.url(call,name=lib.url_safe(tag),root=req.root,tag=req.tag)
+        href=self.url(call,name=lib.url_safe(tag),tag=req.tag,root=req.root)
         # cls
         poss=tag in recent
         got_style="huge bright" if (tag==req.tag) else "bright"
