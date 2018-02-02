@@ -19,14 +19,6 @@ div: id="navbar", cls="navbar navbar-default"
           cls="enabled" if rootrat<=rat else "disabled"
           tit= "allow all items" if rat==-4 else "ignore items rated below %s" % self.rating_symbol(rat)
           a:self.rating_symbol(rat), href=self.url("set_global_filter?rating=%s" % rat), title=tit, cls=cls
-        "&nbsp;"
-      if req.page in ("latest","tagged") and req.pages:
-        page=self if self.uid>2 else req.pages[0]
-        a: "slideshow",href=page.url("show",tag=req.tag,root=req.root), title="slideshow", target="_blank"
-#        span: "-", cls="light"
-        "&nbsp;"
-      a: "latest",href=self.url(f"latest?root={self.uid}"), title=f"what's recent in {self.name}"
-#      span: "-", cls="light"
       "&nbsp;"
       a: "additions",href=self.get(2).url(), title="import and show new images"
       "&nbsp;"

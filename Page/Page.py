@@ -24,7 +24,7 @@ class Page(basePage):
 
   toplevel=6
   toplevel=7
-#  toplevel=9
+  toplevel=9
 
   # view override ####################
 
@@ -71,12 +71,12 @@ class Page(basePage):
     req.title="latest"
     req.page='additions' # for paging
     req.root=2 # for navigation
-    return self.listing(req)
+    if req.pages:
+      return self.listing(req)
+    # fallback if no pages found
+    req.warning= "no additions found"
+    return self.get(1).view(req)
 
-  # slideshow
-  @html
-  def show(self,req):
-    "slideshow" 
 
   # edit override
   
@@ -188,13 +188,27 @@ class Page(basePage):
     req.tag=".".join(tags)
     return self.redirect(req,"?tag=%s" % req.tag)
 
+  def latest_pages(self,limit):
+    "returns a list of image pages in descending uid order"
+    where=f"{self.parentclause()} and rating>={self.minrating()}"
+    return self.list(kind='image',where=where,orderby="uid desc",limit=limit)
+
+  def latest(self, req):
+    "overridden to include only child images, and to allow for additions"
+    req.pages = self.latest_pages(limit=page(req))
+    req.title="latest"
+    req.page='latest' # for paging
+    return self.listing(req)
+
   def tagged(self,req,pagemax=50):
-    " returns a listing of all pages with given req.tag "
+    " returns a listing of all images with given req.tag, in descending uid order"
+    if not req.tag:
+      return self.latest(req)
     if req.tag=="UNTAGGED":
       return self.untagged(req,pagemax)
     limit=page(req,pagemax)
     req.pages=self.children_by_tag(tag=req.tag,order="uid desc",limit=limit)
-    req.title='images tagged "%s"' % req.tag
+    req.title=f'images tagged {req.tag}'
     req.page='tagged' # for paging
     return self.listing(req)
 
@@ -220,16 +234,34 @@ class Page(basePage):
       pages=self.list(kind="image",where=where,limit=1,orderby='uid desc')
       if pages:
         return pages[0]
-      if req.root==1: # return to additions page
-        req._method='additions'
-      else:
-        req._method=''
+#      if req.root==1: # return to additions page
+#        req._method='additions'
+#      else:
+#        req._method=''
       return p
 
   def next(self,req):
     " return the view (or req._method) of the next page for given req.tag and req.root "
     p=self.next_page(req)
     return p.edit_return(req,req._method)
+
+  # slideshow #############
+
+  @html
+  def show(self,req):
+    "slideshow" 
+
+  def slideshow(self,req):
+    "start a slideshow for given req.tag and req.root"
+    if req.tag:
+      first=self.children_by_tag(tag=req.tag,order="uid desc",limit=1)
+    else:
+      first=self.latest_pages(limit=1)
+    if first:
+      return first[0].show(req)
+    req.warning="no results found"
+    return self.view(req)
+
 
   # tags utilities #####################
 
@@ -355,7 +387,7 @@ class Page(basePage):
 
 
   def children_untagged(self,order="uid",limit="",below=None):
-    """ returns a list of all child page objects with no tag
+    """ returns a list of all child images with no tag
     - "below" - if set - limits the results to uids below this value
     """
     db=self.Config.database
@@ -469,6 +501,7 @@ class Page(basePage):
   def select(self,req):
     """ select self and req.rival, to make an offer
         - starting self should be that of the previous offer (or any preferred starting place)
+        if req.tag is specified then the results will be filtered using the first given tag 
     """
 #    db=self.Config.database
 #    sql="""select pages.uid from `%s`.pages
@@ -485,20 +518,25 @@ class Page(basePage):
 #    pages=[p["uid"] for p in self.list(sql=sql,asObjects=False)]
 
     # get self
-    if self.kind=='image': 
-      where="rating>=0 and uid>%s" % self.uid
+    tag = req.tag.split(".",1)[0] if req.tag else ""
+    andclause = f' and uid in (select distinct page from `{self.Config.database}`.tags where name="{tag}")' if tag else ""
+    basic_where = "rating>=0"+andclause
+    if self.kind == 'image': 
+      where=basic_where+f" and uid>{self.uid}"
     else: # assume fist time
-      where="rating>=0"
-    selfs=self.list_int('uid',kind="image",score=0,where=where,orderby="uid",limit="1")
+      where=basic_where
+#    print("self",where) 
+    selfs=self.list_int('uid',kind="image",where=where,orderby="uid",limit="1")
     # get rival
     if req.rival:
-      where="rating>=0 and uid<%s" % req.rival
+      where=basic_where+f" and uid<{req.rival}"
     else: # assume first time
-      where="rating>=0"
-    rivals=self.list_int('uid',kind="image",score=0,where=where,orderby="uid desc",limit="1")
+      where=basic_where
+#    print("rival",where) 
+    rivals=self.list_int('uid',kind="image",where=where,orderby="uid desc",limit="1")
     # make and offer
     if selfs and rivals:
-      return req.redirect(self.get(selfs[0]).url("offer",rival=rivals[0]))
+      return req.redirect(self.get(selfs[0]).url("offer",rival=rivals[0],tag=tag))
     # bomb out
     return req.redirect(self.get(1).url())
 

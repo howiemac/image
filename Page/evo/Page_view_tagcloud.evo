@@ -1,13 +1,15 @@
 #tag cloud
 Page_header.evo
 Page_select_level.evo
-if req.tag:
-  div: id="viewtagselect"
-    a: href=self.url("tagged?tag=%s%s" % (lib.url_safe(req.tag),"&root=1" if self.uid==1 else ""))
-      span:"view images tagged: "
+div: id="viewtagselect"
+    span:f"{'tags' if req.tag else 'latest'}: ", cls='light'
     for i in req.tag.split("."):
       a: href=self.url("selecttag?tag=%s&deltag=%s" % (req.tag,i)), title="remove"
         span: i
+    a:href=self.url("tagged",tag=req.tag,root=self.uid), title=f"list {self.name} {req.tag}"
+      button:"view", type="button", cls="cool" ,
+    a:href=self.url("slideshow",tag=req.tag,root=self.uid), title=f"slideshow {self.name} {req.tag}", target="_blank"
+      button:"show", type="button", cls="cool"
     br:
     br:
 div: id="tagcloud"

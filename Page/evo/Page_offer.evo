@@ -2,13 +2,13 @@
 div:style="height:100%; width:100%"
   rival=self.get(lib.safeint(req.rival))
   # show self image
-  a:href=self.url("win",rival=rival.uid), title=self.name
+  a:href=self.url("win",rival=rival.uid,tag=req.tag), title=self.name
     img:src=self.file_url(), alt=self.code, style="float:left;"+self.autostyle(75)
   # show rival image
-  a:href=self.url("lose",rival=rival.uid), title=rival.name
+  a:href=self.url("lose",rival=rival.uid,tag=req.tag), title=rival.name
     img:src=rival.file_url(), alt=rival.code, style="float:right;"+rival.autostyle(75)
   # pass
-  a: href=self.url("select",rival=rival.uid), title="pass"
+  a: href=self.url("select",rival=rival.uid, tag=req.tag), title="pass"
     br:
     h2: "PASS", style="text-align:center"
   # show info

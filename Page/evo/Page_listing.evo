@@ -1,4 +1,12 @@
 Page_listing_header.evo
+
+br:
+if req.pages:
+  div: id="slideshowselect"
+    a:href=self.url("slideshow",tag=req.tag,root=self.uid), title=f"slideshow {self.name} {req.tag}", target="_blank"
+      button:"show", type="button", cls="cool"
+    br:
+
 div: id='content'
   for item in req.pages:
     div:cls="summary"

@@ -22,17 +22,6 @@ display:inline;
 padding:5px 0 0 0;
 }
 
-.intransport{
-display:inline-block;
-}
-.intransport img{
-height:16px;
-}
-
-#childpages .intransport {
-vertical-align:middle;
-}
-
 
 #rate-score{
 float:right;
@@ -64,50 +53,10 @@ margin-top: 70px;
 /* height:24px; */
 }
 
-#transport form, button, img{
-  border:solid 0px;
-  padding:0;
-  margin:0;
-}
-
-#transport, #transport button, #speaker {
- vertical-align: bottom;
-}
-
-#transport-panel img, #playorder-button img{ 
-/*#transport-panel img{*/
-height:24px;
-}
-
-#pause img{
-  padding: 0 6px;
-}
-
-#tracktime {
-vertical-align:15%;
-width:80px;
-font-size:170%;
-margin:0;
-} 
-
-#speaker,#speakerinline {
-/* margin-bottom:-4px; */
-}
-
 #viewsymbols img{
 height:22px;
 padding: 0px 5px;
 }
-
-#mplogo {
-vertical-align:super;
-}
-
-/*
-#tracktimeform button:hover{
-background: url(/Resources/theme_dark/images/pause-24.png) top no-repeat;
-} 
-*/
 
 #navbar {
 float:right;
@@ -117,11 +66,6 @@ margin-right:2%;
 #next_nav {
 clear:none;
 }
-
-#filtersymbols {
-/*vertical-align:super;*/
-}
-
 
 #searchform input {
 width: 200p;

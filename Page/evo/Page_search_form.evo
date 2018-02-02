@@ -10,11 +10,11 @@
 
 span: id="searchform"
 # TEMP DISABLE - should be level-specific
-#  form: action=req.user.abs_url("search")
-#    span: cls="input-group input-group-sm"
-#      input: name="searchfor", placeholder="search", onkeyup="searchChange(this)", onchange="searchChange(this)", alt="search"
-#      span: cls="input-group-btn"
-#        button:cls="cool", disabled="disabled", id='gobutton', title="find"
-#          img:src="/site/evoke/images/glyphicons-28-search.png"
+  form: action=req.user.abs_url("search")
+    span: cls="input-group input-group-sm"
+      input: name="searchfor", placeholder="search", onkeyup="searchChange(this)", onchange="searchChange(this)", alt="search"
+      span: cls="input-group-btn"
+        button:cls="cool", disabled="disabled", id='gobutton', title="find"
+          img:src="/site/evoke/images/glyphicons-28-search.png"
 
 

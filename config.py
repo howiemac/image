@@ -8,7 +8,7 @@ config file for app
 
 default_class="Page"
 urlpath=""  # no /evoke in url
-
+show_time=False
 
 from evoke.data.schema import *  #for data definition
 
@@ -16,7 +16,6 @@ class Tag(Schema):
   table='tags'
   name=TAG,KEY
   page=INT,KEY
-
 
 
 #class Test(Schema):
@@ -28,5 +27,3 @@ class Tag(Schema):
 #  pass
 
 
-# include config.py files from class folders
-from Page.config import *
